@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cơ Khí Nguyễn Anh | Giải Pháp Kệ Kho Hàng & Hệ Thống Lưu Trữ Tự Động</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0d3b66',
+                            dark: '#082542',
+                            light: '#18528c'
+                        },
+                        safety: {
+                            DEFAULT: '#e76f51',
+                            hover: '#d65a3d',
+                            accent: '#f4a261'
+                        },
+                        steel: {
+                            DEFAULT: '#2b2d42',
+                            dark: '#1d1e2c',
+                            light: '#4a4e69'
+                        },
+                        industrial: '#f8f9fa'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0d3b66;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e76f51;
+        }
+
+        /* Pulse Ring Effect for Hotline & Chatbot */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .pulse-ring-effect {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+
+        /* Chat Typing Indicator */
+        .typing-dot {
+            animation: typingAnimation 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Technical Blueprint Grid Background Pattern */
+        .bg-blueprint-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 0);
+            background-size: 28px 28px;
+        }
+    </style>
+</head>
+<body class="bg-industrial font-sans text-steel antialiased selection:bg-navy selection:text-white">
+
+    <header class="sticky top-0 z-40 w-full bg-navy-dark text-white shadow-xl border-b border-navy-light/40">
+        <!-- Top Bar -->
+        <div class="bg-navy border-b border-white/10 text-xs py-2 px-4 sm:px-8 flex justify-between items-center">
+            <div class="flex items-center space-x-6">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-safety-accent"></i> <span data-lang="factory_addr">KCN Tân Bình & KCN Hiệp Phước, TP. Hồ Chí Minh</span></span>
+                <span class="hidden lg:inline-flex items-center gap-2"><i class="fa-solid fa-award text-amber-400"></i> ISO 9001:2015 & FEM 10.2.02 Standards</span>
+            </div>
+            <div class="flex items-center space-x-5">
+                <a href="mailto:contact@nguyenanhcokhi.vn" class="hover:text-safety-accent transition flex items-center gap-1.5"><i class="fa-solid fa-envelope"></i> contact@nguyenanhcokhi.vn</a>
+                <span class="hidden sm:inline text-white/30">|</span>
+                
+                <!-- Language Switcher -->
+                <div class="flex items-center bg-navy-dark rounded p-0.5 text-[11px] font-bold border border-navy-light/60">
+                    <button id="btn-lang-vi" onclick="setLanguage('vi')" class="px-2.5 py-0.5 rounded bg-safety text-white transition">VIE</button>
+                    <button id="btn-lang-en" onclick="setLanguage('en')" class="px-2.5 py-0.5 rounded hover:text-safety-accent text-gray-300 transition">ENG</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 bg-safety text-white rounded-xl flex items-center justify-center text-2xl font-black shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    <i class="fa-solid fa-cubes-stacked"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl sm:text-2xl font-extrabold tracking-wider text-white leading-none">CƠ KHÍ <span class="text-safety-accent">NGUYỄN ANH</span></span>
+                    <span class="text-[10px] tracking-widest text-gray-300 font-semibold uppercase mt-1" data-lang="sub_brand">Gia Công Kệ Kho & Lưu Trữ Tự Động</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden lg:flex items-center space-x-7 text-sm font-semibold tracking-wide">
+                <a href="#home" class="text-white hover:text-safety-accent transition" data-lang="nav_home">Trang Chủ</a>
+                <a href="#about" class="text-gray-200 hover:text-safety-accent transition" data-lang="nav_about">Giới Thiệu</a>
+                <a href="#products" class="text-gray-200 hover:text-safety-accent transition" data-lang="nav_products">Sản Phẩm Kệ Kho</a>
+                <a href="#solutions" class="text-gray-200 hover:text-safety-accent transition" data-lang="nav_solutions">Giải Pháp Kho Vận</a>
+                <a href="#process" class="text-gray-200 hover:text-safety-accent transition" data-lang="nav_process">Quy Trình Triển Khai</a>
+                <a href="#quote-form" class="text-gray-200 hover:text-safety-accent transition" data-lang="nav_quote">Báo Giá</a>
+                <a href="#footer" class="text-gray-200 hover:text-safety-accent transition" data-lang="nav_contact">Liên Hệ</a>
+            </nav>
+
+            <!-- Hotline & CTA Button -->
+            <div class="hidden sm:flex items-center space-x-3">
+                <a href="tel:0988123456" class="flex items-center gap-2 bg-navy hover:bg-navy-light text-white text-xs font-bold px-3.5 py-2.5 rounded-lg border border-white/20 transition">
+                    <i class="fa-solid fa-headset text-safety-accent text-sm animate-pulse"></i>
+                    <div>
+                        <span class="block text-[9px] text-gray-300 uppercase leading-none">Hotline Tổng Đài</span>
+                        <span class="text-xs font-black tracking-wide">0988 123 456</span>
+                    </div>
+                </a>
+                <a href="#quote-form" class="bg-safety hover:bg-safety-hover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-md hover:shadow-lg transition uppercase tracking-wider" data-lang="btn_get_quote">
+                    Báo Giá Ngay
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-gray-300 hover:text-white text-2xl focus:outline-none p-1">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-navy-dark border-t border-navy-light/40 px-5 pt-3 pb-6 space-y-3">
+            <a href="#home" onclick="toggleMobileMenu()" class="block text-white font-medium py-2 border-b border-white/10" data-lang="nav_home">Trang Chủ</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium py-2 border-b border-white/10" data-lang="nav_about">Giới Thiệu Năng Lực</a>
+            <a href="#products" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium py-2 border-b border-white/10" data-lang="nav_products">Sản Phẩm Kệ Kho</a>
+            <a href="#solutions" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium py-2 border-b border-white/10" data-lang="nav_solutions">Giải Pháp Tiêu Chuẩn Kho</a>
+            <a href="#process" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium py-2 border-b border-white/10" data-lang="nav_process">Quy Trình Triển Khai</a>
+            <a href="#quote-form" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium py-2 border-b border-white/10" data-lang="nav_quote">Form Yêu Cầu Báo Giá</a>
+            <a href="#footer" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium py-2" data-lang="nav_contact">Thông Tin Liên Hệ</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="tel:0988123456" class="w-full text-center bg-navy hover:bg-navy-light text-white font-bold py-2.5 rounded-lg text-xs">
+                    <i class="fa-solid fa-phone mr-2 text-safety-accent"></i> Hotline: 0988 123 456
+                </a>
+                <a href="#quote-form" onclick="toggleMobileMenu()" class="w-full text-center bg-safety hover:bg-safety-hover text-white font-bold py-2.5 rounded-lg text-xs uppercase" data-lang="btn_get_quote">
+                    Đăng Ký Khảo Sát & Báo Giá
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="relative bg-gradient-to-r from-navy-dark via-navy to-navy-dark text-white py-16 lg:py-24 overflow-hidden border-b-4 border-safety">
+        <div class="absolute inset-0 bg-blueprint-pattern opacity-20 pointer-events-none"></div>
+        <div class="absolute -right-24 -bottom-24 w-96 h-96 bg-safety/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-navy-light/60 border border-safety-accent/40 text-xs font-semibold text-safety-accent">
+                        <span class="w-2.5 h-2.5 rounded-full bg-safety animate-ping"></span>
+                        <span data-lang="hero_badge">ĐƠN VỊ TIÊN PHONG SẢN XUẤT KỆ KHO B2B ĐẠT CHUẨN KHO LẠNH & GMP</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight uppercase" data-lang="hero_title">
+                        GIẢI PHÁP KỆ KHO HÀNG & HỆ THỐNG LƯU TRỮ TỰ ĐỘNG CHUYÊN NGHIỆP
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-gray-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0" data-lang="hero_desc">
+                        Cơ Khí Nguyễn Anh chuyên tư vấn, thiết kế, sản xuất & lắp đặt trọn gói hệ thống kệ tải trọng nặng, kệ Radio Shuttle, ASRS, kệ trung tải và Pallet sắt phục vụ nhà kho thông minh toàn quốc.
+                    </p>
+
+                    <!-- Hero Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#quote-form" class="w-full sm:w-auto bg-safety hover:bg-safety-hover text-white font-bold text-sm px-8 py-4 rounded-xl shadow-xl hover:shadow-safety/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group">
+                            <i class="fa-solid fa-calculator text-lg group-hover:rotate-12 transition-transform"></i>
+                            <span data-lang="hero_cta_quote">Yêu Cầu Báo Giá & Tư Vấn Kỹ Thuật</span>
+                        </a>
+                        <button onclick="openCatalogModal()" class="w-full sm:w-auto bg-navy-light hover:bg-navy border border-white/20 text-white font-bold text-sm px-7 py-4 rounded-xl transition flex items-center justify-center gap-3 shadow-md">
+                            <i class="fa-solid fa-file-pdf text-red-400 text-lg"></i>
+                            <span data-lang="hero_cta_catalog">Tải Catalog Sản Phẩm (PDF)</span>
+                        </button>
+                    </div>
+
+                    <!-- Highlight Badges -->
+                    <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-gray-300 font-semibold">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-shield-check text-safety-accent text-sm"></i> Chịu Tải Đến 4,000 kg/Tầng</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-warehouse text-safety-accent text-sm"></i> Tối Ưu 80% Diện Tích Kho</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-safety-accent text-sm"></i> Bảo Hành Đến 5 Năm</span>
+                    </div>
+                </div>
+
+                <!-- Hero Right Card Stats -->
+                <div class="lg:col-span-5 bg-navy-dark/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-navy-light/60 shadow-2xl">
+                    <div class="border-b border-navy-light/50 pb-4 mb-6 flex justify-between items-center">
+                        <h3 class="text-base font-bold text-white uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-safety-accent"></i>
+                            <span data-lang="stats_title">Năng Lực Nhà Máy Nguyễn Anh</span>
+                        </h3>
+                        <span class="text-[10px] bg-safety text-white font-bold px-2.5 py-1 rounded">2026 Production</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-navy/80 p-4 rounded-xl border border-white/10">
+                            <div class="text-3xl font-black text-safety-accent mb-1">12+</div>
+                            <div class="text-xs font-medium text-gray-300" data-lang="stat_1">Năm Kinh Nghiệm Chế Tạo</div>
+                        </div>
+                        <div class="bg-navy/80 p-4 rounded-xl border border-white/10">
+                            <div class="text-3xl font-black text-amber-400 mb-1">1,200+</div>
+                            <div class="text-xs font-medium text-gray-300" data-lang="stat_2">Dự Án Kho Vận Lắp Đặt</div>
+                        </div>
+                        <div class="bg-navy/80 p-4 rounded-xl border border-white/10">
+                            <div class="text-3xl font-black text-sky-400 mb-1">15,000 m²</div>
+                            <div class="text-xs font-medium text-gray-300" data-lang="stat_3">Diện Tích Nhà Xưởng</div>
+                        </div>
+                        <div class="bg-navy/80 p-4 rounded-xl border border-white/10">
+                            <div class="text-3xl font-black text-emerald-400 mb-1">100%</div>
+                            <div class="text-xs font-medium text-gray-300" data-lang="stat_4">Thử Tải Kiểm Định An Toàn</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-navy-light/50 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-safety/20 rounded-full flex items-center justify-center text-safety-accent flex-shrink-0">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-tight">
+                            Hỗ trợ đăng ký <strong>Khảo sát mặt bằng kho miễn phí tận nơi</strong> trong vòng 24 giờ làm việc.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-black text-safety uppercase tracking-widest mb-2" data-lang="about_sub">Về Cơ Khí Nguyễn Anh</h2>
+                <h3 class="text-2xl sm:text-3xl font-black text-navy uppercase" data-lang="about_title">TIÊU CHUẨN SẢN XUẤT CÔNG NGHIỆP HÀNG ĐẦU</h3>
+                <div class="w-20 h-1 bg-safety mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Cap 1 -->
+                <div class="bg-industrial p-6 sm:p-8 rounded-2xl border border-gray-200 hover:border-navy hover:shadow-xl transition duration-300 group">
+                    <div class="w-14 h-14 bg-navy text-white rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:bg-safety transition duration-300 shadow-md">
+                        <i class="fa-solid fa-industry"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-3" data-lang="cap1_title">Dây Chuyền Sơn Tĩnh Điện Tự Động</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed" data-lang="cap1_desc">Hệ thống xử lý bề mặt kim loại 7 bể hóa chất đạt chuẩn, công nghệ phủ bột sơn tĩnh điện độ bền màu cực cao, chống gỉ sét môi trường kho lạnh -30°C.</p>
+                </div>
+
+                <!-- Cap 2 -->
+                <div class="bg-industrial p-6 sm:p-8 rounded-2xl border border-gray-200 hover:border-navy hover:shadow-xl transition duration-300 group">
+                    <div class="w-14 h-14 bg-navy text-white rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:bg-safety transition duration-300 shadow-md">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-3" data-lang="cap2_title">Máy Cán Định Hình & CNC Chính Xác</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed" data-lang="cap2_desc">Sở hữu máy cán chân kệ Omega liên hoàn, máy đột lỗ NC tự động và Robot hàn đường seams chuẩn xác micron, đảm bảo chịu lực tiêu chuẩn FEM châu Âu.</p>
+                </div>
+
+                <!-- Cap 3 -->
+                <div class="bg-industrial p-6 sm:p-8 rounded-2xl border border-gray-200 hover:border-navy hover:shadow-xl transition duration-300 group">
+                    <div class="w-14 h-14 bg-navy text-white rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:bg-safety transition duration-300 shadow-md">
+                        <i class="fa-solid fa-drafting-compass"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-navy mb-3" data-lang="cap3_title">Đội Ngũ Kỹ Sư Kết Cấu B2B</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed" data-lang="cap3_desc">Đội ngũ kỹ sư tính toán phân tích mô phỏng mô-men uốn dầm Beam, tải trọng động & tĩnh. Thiết kế bản vẽ 2D Autocad và 3D Solidworks tối ưu mật độ chứa hàng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-16 bg-industrial">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-black text-safety uppercase tracking-widest mb-2" data-lang="prod_sub">Danh Mục Sản Phẩm</h2>
+                <h3 class="text-2xl sm:text-3xl font-black text-navy uppercase" data-lang="prod_title">SẢN PHẨM KỆ KHO & HỆ THỐNG LƯU TRỮ CỐT LÕI</h3>
+                <p class="text-xs sm:text-sm text-gray-600 mt-2">Đáp ứng hoàn hảo mọi diện tích, tải trọng và mô hình quản lý hàng hóa LIFO/FIFO</p>
+                <div class="w-20 h-1 bg-safety mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <!-- Products Category Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Product 1: Radio Shuttle -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="bg-navy-dark p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-3 right-3 text-[10px] bg-safety font-bold px-2.5 py-1 rounded">IoT Automation</div>
+                            <div class="w-14 h-14 bg-navy rounded-xl flex items-center justify-center text-2xl mb-3 text-safety-accent border border-navy-light">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <h4 class="text-lg font-bold" data-lang="p1_title">Kệ Radio Shuttle Tự Động</h4>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed" data-lang="p1_desc">Hệ thống lưu trữ mật độ cao sử dụng Robot Shuttle chạy tự động trong dãy kệ bằng điều khiển từ xa. Tăng 90% hiệu suất chứa hàng kho lạnh.</p>
+                            <div class="bg-industrial p-3 rounded-xl text-xs space-y-1.5 border border-gray-200">
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tải trọng:</span> <span class="font-bold text-navy">500 - 1,500 kg/Pallet</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Môi trường:</span> <span class="font-bold text-navy">Thường & Kho lạnh -30°C</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Xuất nhập:</span> <span class="font-bold text-navy">FIFO / LIFO</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="requestQuoteProduct('Hệ thống Kệ Radio Shuttle Tự Động')" class="w-full bg-navy hover:bg-navy-light text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-safety-accent"></i>
+                            <span data-lang="btn_req_quote">Yêu Cầu Báo Giá</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2: Selective Racking -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="bg-navy-dark p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-3 right-3 text-[10px] bg-emerald-600 font-bold px-2.5 py-1 rounded">100% Access</div>
+                            <div class="w-14 h-14 bg-navy rounded-xl flex items-center justify-center text-2xl mb-3 text-safety-accent border border-navy-light">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <h4 class="text-lg font-bold" data-lang="p2_title">Kệ Chứa Hàng Selective</h4>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed" data-lang="p2_desc">Hệ thống kệ phổ biến nhất cho phép truy xuất trực tiếp 100% Pallet. Phù hợp cho kho quy mô tổng hợp, nhiều chủng loại SKU sản phẩm.</p>
+                            <div class="bg-industrial p-3 rounded-xl text-xs space-y-1.5 border border-gray-200">
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tải trọng:</span> <span class="font-bold text-navy">1,000 - 4,000 kg/Tầng</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Chiều cao:</span> <span class="font-bold text-navy">Tối đa 12 mét</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Xe nâng:</span> <span class="font-bold text-navy">Thích hợp mọi loại xe</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="requestQuoteProduct('Kệ Chứa Hàng Selective')" class="w-full bg-navy hover:bg-navy-light text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-safety-accent"></i>
+                            <span data-lang="btn_req_quote">Yêu Cầu Báo Giá</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3: Drive-In Racking -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="bg-navy-dark p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-3 right-3 text-[10px] bg-amber-500 text-black font-bold px-2.5 py-1 rounded">High Density</div>
+                            <div class="w-14 h-14 bg-navy rounded-xl flex items-center justify-center text-2xl mb-3 text-safety-accent border border-navy-light">
+                                <i class="fa-solid fa-truck-ramp-box"></i>
+                            </div>
+                            <h4 class="text-lg font-bold" data-lang="p3_title">Kệ Tải Trọng Nặng Drive-In</h4>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed" data-lang="p3_desc">Xe nâng chui trực tiếp vào trong lòng dãy kệ để đặt pallet. Tiết kiệm tối đa lối đi, lý tưởng cho kho hàng cùng một chủng loại sản phẩm lớn.</p>
+                            <div class="bg-industrial p-3 rounded-xl text-xs space-y-1.5 border border-gray-200">
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tải trọng:</span> <span class="font-bold text-navy">500 - 1,500 kg/Pallet</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tăng diện tích:</span> <span class="font-bold text-navy">Tới 70% không gian kho</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Phương thức:</span> <span class="font-bold text-navy">LIFO (Vào sau ra trước)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="requestQuoteProduct('Kệ Drive-In Tải Trọng Nặng')" class="w-full bg-navy hover:bg-navy-light text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-safety-accent"></i>
+                            <span data-lang="btn_req_quote">Yêu Cầu Báo Giá</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4: Mezzanine Floor -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="bg-navy-dark p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-3 right-3 text-[10px] bg-sky-500 font-bold px-2.5 py-1 rounded">Space Doubler</div>
+                            <div class="w-14 h-14 bg-navy rounded-xl flex items-center justify-center text-2xl mb-3 text-safety-accent border border-navy-light">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                            <h4 class="text-lg font-bold" data-lang="p4_title">Kệ Sàn Mezzanine & VNA</h4>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed" data-lang="p4_desc">Hệ thống sàn thép kết cấu nhân đôi/nhân ba diện tích mặt bằng kho. Kết hợp với kệ lối đi hẹp VNA giúp khai thác tối đa chiều cao nhà xưởng.</p>
+                            <div class="bg-industrial p-3 rounded-xl text-xs space-y-1.5 border border-gray-200">
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tải trọng sàn:</span> <span class="font-bold text-navy">300 - 1,000 kg/m²</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Mặt sàn:</span> <span class="font-bold text-navy">Tôn gân, gỗ MDF, lưới</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tiện ích:</span> <span class="font-bold text-navy">Tích hợp cầu thang/tời nâng</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="requestQuoteProduct('Kệ Sàn Mezzanine & VNA')" class="w-full bg-navy hover:bg-navy-light text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-safety-accent"></i>
+                            <span data-lang="btn_req_quote">Yêu Cầu Báo Giá</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 5: Medium Duty & Cantilever -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="bg-navy-dark p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-3 right-3 text-[10px] bg-purple-600 font-bold px-2.5 py-1 rounded">Versatile</div>
+                            <div class="w-14 h-14 bg-navy rounded-xl flex items-center justify-center text-2xl mb-3 text-safety-accent border border-navy-light">
+                                <i class="fa-solid fa-bars-staggered"></i>
+                            </div>
+                            <h4 class="text-lg font-bold" data-lang="p5_title">Kệ Trung Tải & Kệ Tay Đỡ</h4>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed" data-lang="p5_desc">Kệ trung tải xếp hàng bằng tay và kệ tay đỡ (Cantilever) chuyên cho hàng hóa dạng ống dài, gỗ thanh, cuộn thép, nhôm định hình.</p>
+                            <div class="bg-industrial p-3 rounded-xl text-xs space-y-1.5 border border-gray-200">
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tải trọng trung tải:</span> <span class="font-bold text-navy">200 - 800 kg/Tầng</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Kệ tay đỡ:</span> <span class="font-bold text-navy">Đo bóc theo kích thước dài</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Lắp ráp:</span> <span class="font-bold text-navy">Ngàm móc tháo lắp linh hoạt</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="requestQuoteProduct('Kệ Trung Tải & Kệ Tay Đỡ')" class="w-full bg-navy hover:bg-navy-light text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-safety-accent"></i>
+                            <span data-lang="btn_req_quote">Yêu Cầu Báo Giá</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 6: Steel Pallet & Accessories -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="bg-navy-dark p-6 text-white relative overflow-hidden">
+                            <div class="absolute top-3 right-3 text-[10px] bg-red-500 font-bold px-2.5 py-1 rounded">Industrial Grade</div>
+                            <div class="w-14 h-14 bg-navy rounded-xl flex items-center justify-center text-2xl mb-3 text-safety-accent border border-navy-light">
+                                <i class="fa-solid fa-pallet"></i>
+                            </div>
+                            <h4 class="text-lg font-bold" data-lang="p6_title">Pallet Sắt Mạ Kẽm & Phụ Kiện</h4>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed" data-lang="p6_desc">Sản xuất Pallet sắt sơn tĩnh điện/mạ kẽm nhúng nóng, lồng lưới sắt gấp gọn trữ hàng và rào chắn bảo vệ chân kệ chống va đụng xe nâng.</p>
+                            <div class="bg-industrial p-3 rounded-xl text-xs space-y-1.5 border border-gray-200">
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Độ bền:</span> <span class="font-bold text-navy">Gấp 5 lần Pallet gỗ</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Tính năng:</span> <span class="font-bold text-navy">Chống cháy PCCC & Sạch sẽ</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-gray-500">Kích thước:</span> <span class="font-bold text-navy">Sản xuất OEM theo bản vẽ</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="requestQuoteProduct('Pallet Sắt Mạ Kẽm & Phụ Kiện Kho')" class="w-full bg-navy hover:bg-navy-light text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-safety-accent"></i>
+                            <span data-lang="btn_req_quote">Yêu Cầu Báo Giá</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="solutions" class="py-16 bg-navy text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <h2 class="text-xs font-black text-safety-accent uppercase tracking-widest mb-2" data-lang="sol_sub">Tiêu Chuẩn Kho Vận Quốc Tế</h2>
+                <h3 class="text-2xl sm:text-3xl font-black uppercase" data-lang="sol_title">GIẢI PHÁP ĐÁP ỨNG NGHIÊM NGẶT AN TOÀN PCCC & CHỨNG NHẬN ISO</h3>
+                <div class="w-20 h-1 bg-safety mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Sol 1 -->
+                <div class="bg-navy-dark p-6 rounded-2xl border border-navy-light/60 hover:border-safety transition duration-300">
+                    <div class="w-12 h-12 bg-safety/20 rounded-xl flex items-center justify-center text-safety-accent text-2xl mb-4">
+                        <i class="fa-solid fa-snowflake"></i>
+                    </div>
+                    <h4 class="font-bold text-base mb-2" data-lang="sol1_title">Tiêu Chuẩn Kho Lạnh (-30°C)</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed" data-lang="sol1_desc">Sơn tĩnh điện chịu nhiệt chuyên dụng không tróc vảy, thép mạ kẽm cường độ cao chống oxy hóa trong kho đông lạnh thủy hải sản.</p>
+                </div>
+
+                <!-- Sol 2 -->
+                <div class="bg-navy-dark p-6 rounded-2xl border border-navy-light/60 hover:border-safety transition duration-300">
+                    <div class="w-12 h-12 bg-safety/20 rounded-xl flex items-center justify-center text-safety-accent text-2xl mb-4">
+                        <i class="fa-solid fa-capsules"></i>
+                    </div>
+                    <h4 class="font-bold text-base mb-2" data-lang="sol2_title">Tiêu Chuẩn GMP / GSP Dược Phẩm</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed" data-lang="sol2_desc">Thiết kế tối ưu thông thoáng, không góc chết đọng bụi, bề mặt láng mịn dễ vệ sinh, đáp ứng kiểm định nghiêm ngặt Bộ Y Tế.</p>
+                </div>
+
+                <!-- Sol 3 -->
+                <div class="bg-navy-dark p-6 rounded-2xl border border-navy-light/60 hover:border-safety transition duration-300">
+                    <div class="w-12 h-12 bg-safety/20 rounded-xl flex items-center justify-center text-safety-accent text-2xl mb-4">
+                        <i class="fa-solid fa-fire-extinguisher"></i>
+                    </div>
+                    <h4 class="font-bold text-base mb-2" data-lang="sol3_title">Nghị Định PCCC Nhà Kho Mới</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed" data-lang="sol3_desc">Kết cấu khoảng cách giữa các hàng kệ chuẩn xác giúp đầu phun Sprinkler thẩm thấu nước chữa cháy hoàn hảo mọi góc.</p>
+                </div>
+
+                <!-- Sol 4 -->
+                <div class="bg-navy-dark p-6 rounded-2xl border border-navy-light/60 hover:border-safety transition duration-300">
+                    <div class="w-12 h-12 bg-safety/20 rounded-xl flex items-center justify-center text-safety-accent text-2xl mb-4">
+                        <i class="fa-solid fa-vial-circle-check"></i>
+                    </div>
+                    <h4 class="font-bold text-base mb-2" data-lang="sol4_title">Tiêu Chuẩn Châu Âu FEM & ISO</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed" data-lang="sol4_desc">Hệ thống quản lý chất lượng ISO 9001:2015, tính toán độ võng an toàn δ ≤ L/200 theo tiêu chuẩn FEM 10.2.02 Châu Âu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="py-16 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-black text-safety uppercase tracking-widest mb-2" data-lang="proc_sub">Hợp Tác B2B Chuyên Nghiệp</h2>
+                <h3 class="text-2xl sm:text-3xl font-black text-navy uppercase" data-lang="proc_title">QUY TRÌNH TRIỂN KHAI DỰ ÁN 5 BƯỚC CƠ KHÍ NGUYỄN ANH</h3>
+                <div class="w-20 h-1 bg-safety mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
+                <!-- Step 1 -->
+                <div class="bg-industrial p-5 rounded-2xl border border-gray-200 relative flex flex-col items-center text-center hover:border-navy transition duration-300">
+                    <div class="w-12 h-12 bg-navy text-white rounded-full flex items-center justify-center font-black text-lg mb-4 shadow-lg">1</div>
+                    <h4 class="font-bold text-sm mb-2 text-navy" data-lang="step1_title">Khảo Sát Thực Địa</h4>
+                    <p class="text-[11px] text-gray-600 leading-relaxed" data-lang="step1_desc">Tiếp nhận yêu cầu, đo đạc kích thước mặt bằng kho thực tế và lắng nghe nhu cầu luồng hàng.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-industrial p-5 rounded-2xl border border-gray-200 relative flex flex-col items-center text-center hover:border-navy transition duration-300">
+                    <div class="w-12 h-12 bg-navy text-white rounded-full flex items-center justify-center font-black text-lg mb-4 shadow-lg">2</div>
+                    <h4 class="font-bold text-sm mb-2 text-navy" data-lang="step2_title">Thiết Kế 2D / 3D</h4>
+                    <p class="text-[11px] text-gray-600 leading-relaxed" data-lang="step2_desc">Kỹ sư lập bản vẽ phối cảnh 3D kho hàng tối ưu diện tích và lối đi xe nâng hoàn toàn miễn phí.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-industrial p-5 rounded-2xl border border-gray-200 relative flex flex-col items-center text-center hover:border-navy transition duration-300">
+                    <div class="w-12 h-12 bg-navy text-white rounded-full flex items-center justify-center font-black text-lg mb-4 shadow-lg">3</div>
+                    <h4 class="font-bold text-sm mb-2 text-navy" data-lang="step3_title">Bóc Tách & Báo Giá</h4>
+                    <p class="text-[11px] text-gray-600 leading-relaxed" data-lang="step3_desc">Lập bảng dự toán chi tiết chủng loại thép, tải trọng tầng, báo giá cạnh tranh trực tiếp từ nhà máy.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-industrial p-5 rounded-2xl border border-gray-200 relative flex flex-col items-center text-center hover:border-navy transition duration-300">
+                    <div class="w-12 h-12 bg-navy text-white rounded-full flex items-center justify-center font-black text-lg mb-4 shadow-lg">4</div>
+                    <h4 class="font-bold text-sm mb-2 text-navy" data-lang="step4_title">Sản Xuất Tại Xưởng</h4>
+                    <p class="text-[11px] text-gray-600 leading-relaxed" data-lang="step4_desc">Gia công cán định hình, hàn tự động và sơn tĩnh điện tại nhà máy Nguyễn Anh đạt tiến độ 100%.</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="bg-industrial p-5 rounded-2xl border border-gray-200 relative flex flex-col items-center text-center hover:border-navy transition duration-300">
+                    <div class="w-12 h-12 bg-safety text-white rounded-full flex items-center justify-center font-black text-lg mb-4 shadow-lg">5</div>
+                    <h4 class="font-bold text-sm mb-2 text-navy" data-lang="step5_title">Lắp Đặt & Bảo Trì</h4>
+                    <p class="text-[11px] text-gray-600 leading-relaxed" data-lang="step5_desc">Thi công chuyên nghiệp, thử tải nghiệm thu thực tế & cam kết bảo trì kỹ thuật định kỳ 24/7.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-14 bg-industrial border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest" data-lang="partner_title">ĐỐI TÁC TIÊU BIỂU CUNG CẤP HỆ THỐNG KỆ KHO</h4>
+            </div>
+
+            <!-- Client Logos Matrix -->
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center">
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-center text-navy font-black text-sm tracking-wide shadow-sm hover:shadow-md transition opacity-80 hover:opacity-100">
+                    <i class="fa-solid fa-truck-ramp-box mr-2 text-safety"></i> LOGISTICS DEPO
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-center text-navy font-black text-sm tracking-wide shadow-sm hover:shadow-md transition opacity-80 hover:opacity-100">
+                    <i class="fa-solid fa-snowflake mr-2 text-sky-500"></i> COLD CO.
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-center text-navy font-black text-sm tracking-wide shadow-sm hover:shadow-md transition opacity-80 hover:opacity-100">
+                    <i class="fa-solid fa-capsules mr-2 text-emerald-600"></i> PHARMA CORP
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-center text-navy font-black text-sm tracking-wide shadow-sm hover:shadow-md transition opacity-80 hover:opacity-100">
+                    <i class="fa-solid fa-utensils mr-2 text-amber-500"></i> FOOD & BEV
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-center text-navy font-black text-sm tracking-wide shadow-sm hover:shadow-md transition opacity-80 hover:opacity-100">
+                    <i class="fa-solid fa-cart-flatbed mr-2 text-purple-600"></i> FMCG GLOBAL
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-center text-navy font-black text-sm tracking-wide shadow-sm hover:shadow-md transition opacity-80 hover:opacity-100">
+                    <i class="fa-solid fa-boxes-packing mr-2 text-red-500"></i> PACKAGING CO
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quote-form" class="py-16 bg-industrial">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-r from-navy-dark via-navy to-navy-dark p-6 sm:p-10 text-white relative">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-safety text-white rounded-xl flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-file-pen"></i>
+                        </div>
+                        <h3 class="text-2xl font-black uppercase" data-lang="form_title">YÊU CẦU BÁO GIÁ & KHẢO SÁT KHO HÀNG</h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-gray-300" data-lang="form_sub">
+                        Điền thông tin diện tích mặt bằng kho và nhu cầu kệ chứa hàng. Kỹ sư Nguyễn Anh sẽ gửi phương án bản vẽ 2D/3D & báo giá trong 24 giờ.
+                    </p>
+                </div>
+
+                <form id="b2bQuoteForm" onsubmit="handleQuoteFormSubmit(event)" class="p-6 sm:p-10 space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_name">Họ và Tên Người Liên Hệ *</label>
+                            <input type="text" id="q-name" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_company">Tên Doanh Nghiệp / Công Ty *</label>
+                            <input type="text" id="q-company" required placeholder="Ví dụ: Công ty TNHH Logistics..." class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_phone">Số Điện Thoại / Zalo *</label>
+                            <input type="tel" id="q-phone" required placeholder="09xx xxx xxx" class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_email">Địa Chỉ Email B2B *</label>
+                            <input type="email" id="q-email" required placeholder="contact@company.com" class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_category">Loại Hệ Thống Kệ Quan Tâm *</label>
+                            <select id="q-category" required class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm bg-white">
+                                <option value="" disabled selected>-- Chọn hệ thống kệ --</option>
+                                <option value="Hệ thống Kệ Radio Shuttle Tự Động">Hệ thống Kệ Radio Shuttle Tự Động</option>
+                                <option value="Kệ Chứa Hàng Selective">Kệ Chứa Hàng Selective (100% Pallet)</option>
+                                <option value="Kệ Drive-In Tải Trọng Nặng">Kệ Drive-In Tải Trọng Nặng</option>
+                                <option value="Kệ Sàn Mezzanine & VNA">Kệ Sàn Mezzanine & Lối Đi Hẹp VNA</option>
+                                <option value="Kệ Trung Tải & Kệ Tay Đỡ">Kệ Trung Tải & Kệ Tay Đỡ (Cantilever)</option>
+                                <option value="Pallet Sắt Mạ Kẽm & Phụ Kiện">Pallet Sắt Mạ Kẽm & Phụ Kiện Kho</option>
+                                <option value="Đăng ký Khảo sát Mặt bằng Miễn phí">Đăng ký Khảo sát Mặt bằng Kho Miễn phí</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_area">Diện Tích Kho / Tải Trọng Mới (m²)</label>
+                            <input type="text" id="q-area" placeholder="Ví dụ: Kho 1,500m2 - 1,000kg/pallet" class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_link">
+                            <i class="fa-solid fa-link text-safety mr-1"></i> Link Dán Bản Vẽ Kỹ Thuật (Google Drive / PDF / CAD)
+                        </label>
+                        <input type="url" id="q-link" placeholder="https://drive.google.com/file/d/..." class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-navy uppercase mb-2" data-lang="lbl_note">Chi Tiết Yêu Cầu Kỹ Thuật & Yêu Cầu Tiến Độ</label>
+                        <textarea id="q-note" rows="3" placeholder="Ghi chú thêm về chiều cao kho, loại xe nâng đang dùng, môi trường kho nhiệt độ..." class="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-navy focus:outline-none text-xs sm:text-sm"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-safety hover:bg-safety-hover text-white font-black text-sm sm:text-base py-4 rounded-xl shadow-lg transition uppercase tracking-wider flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span data-lang="btn_submit_form">Gửi Yêu Cầu Báo Giá & Đăng Ký Khảo Sát</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer" class="bg-navy-dark text-white border-t-4 border-safety pt-12 pb-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-navy-light/40">
+                
+                <!-- Legal Info -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-safety text-white rounded-xl flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-cubes-stacked"></i>
+                        </div>
+                        <span class="text-xl font-extrabold tracking-wider text-white">CƠ KHÍ <span class="text-safety-accent">NGUYỄN ANH</span></span>
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-200 uppercase tracking-wide">CÔNG TY CỔ PHẦN CƠ KHÍ NGUYỄN ANH</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Chuyên gia chế tạo hệ thống kệ chứa hàng tải trọng nặng, hệ thống lưu trữ tự động thông minh ASRS/Shuttle và Pallet kim loại phục vụ chuỗi cung ứng B2B toàn quốc.
+                    </p>
+                    
+                    <div class="space-y-2 text-xs text-gray-300 pt-2">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-building text-safety-accent mt-0.5"></i>
+                            <span><strong>Văn phòng:</strong> Tầng 5, Tòa nhà Nguyễn Anh Tower, Đường C18, Q. Tân Bình, TP.HCM</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-industry text-safety-accent mt-0.5"></i>
+                            <span><strong>Nhà máy:</strong> Lô B2, Đường số 4, KCN Hiệp Phước, Huyện Nhà Bè, TP.HCM</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-phone text-safety-accent"></i>
+                            <span><strong>Tổng đài:</strong> 0988 123 456 - Hotline Kỹ thuật: (028) 3811 xxxx</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-envelope text-safety-accent"></i>
+                            <span><strong>Email báo giá:</strong> contact@nguyenanhcokhi.vn</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-file-invoice text-safety-accent"></i>
+                            <span><strong>Mã số thuế:</strong> 0314XXXXXX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Nav Links -->
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="text-sm font-bold uppercase text-safety-accent border-l-2 border-safety pl-2" data-lang="foot_links">Danh Mục Sản Phẩm</h4>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li><a href="#products" class="hover:text-safety-accent transition"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Kệ Radio Shuttle Tự Động</a></li>
+                        <li><a href="#products" class="hover:text-safety-accent transition"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Kệ Selective Tải Trọng Nặng</a></li>
+                        <li><a href="#products" class="hover:text-safety-accent transition"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Kệ Drive-In Kho Đông Lạnh</a></li>
+                        <li><a href="#products" class="hover:text-safety-accent transition"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Kệ Sàn Mezzanine & VNA</a></li>
+                        <li><a href="#products" class="hover:text-safety-accent transition"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Pallet Sắt Mạ Kẽm & Rào Chắn</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policy & Map Widget -->
+                <div class="md:col-span-4 space-y-3">
+                    <h4 class="text-sm font-bold uppercase text-safety-accent border-l-2 border-safety pl-2" data-lang="foot_policy">Chính Sách & Cam Kết</h4>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Cam kết bảo hành kết cấu 05 năm.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Miễn phí thiết kế 2D/3D trong 24h.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Đáp ứng đầy đủ chứng nhận xuất xưởng CO/CQ.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Đội ngũ kỹ thuật hỗ trợ sự cố 24/7.</li>
+                    </ul>
+
+                    <div class="mt-4 p-3 bg-navy rounded-xl border border-white/10 text-xs">
+                        <span class="block font-bold text-white mb-1"><i class="fa-solid fa-clock text-amber-400 mr-1"></i> Giờ làm việc nhà máy:</span>
+                        <span class="text-gray-300">Thứ 2 - Thứ 7: 07:30 - 17:30 (Trực hotline 24/7)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400">
+                <p>© 2026 CÔNG TY CỔ PHẦN CƠ KHÍ NGUYỄN ANH (nguyenanhcokhi). All Rights Reserved.</p>
+                <p class="mt-2 sm:mt-0">Thiết Kế Web B2B Tiêu Chuẩn Kỹ Thuật Công Nghiệp</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="catalog-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl border border-gray-200">
+            <button onclick="closeCatalogModal()" class="absolute top-4 right-4 text-gray-400 hover:text-navy text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center text-3xl mx-auto">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </div>
+                <h3 class="text-xl font-black text-navy uppercase">Tải Catalog Kệ Kho Nguyễn Anh</h3>
+                <p class="text-xs text-gray-600">
+                    Vui lòng nhập Email công ty để hệ thống tự động gửi Catalog thông số kỹ thuật (PDF - 18MB) đầy đủ nhất.
+                </p>
+            </div>
+
+            <form onsubmit="handleCatalogSubmit(event)" class="mt-6 space-y-4">
+                <div>
+                    <input type="email" id="cat-email" required placeholder="Nhập email nhận Catalog..." class="w-full px-4 py-3 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <div>
+                    <input type="tel" id="cat-phone" required placeholder="Nhập số điện thoại/Zalo..." class="w-full px-4 py-3 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-navy focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-navy hover:bg-navy-light text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition">
+                    <i class="fa-solid fa-download mr-1"></i> Nhận Link Catalog PDF Ngay
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Chat Trigger Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <div id="chat-badge" class="absolute -top-2 -left-3 bg-safety text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-lg pulse-ring-effect z-10 flex items-center gap-1 border border-white">
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+            <span>AI Báo Giá</span>
+        </div>
+
+        <button onclick="toggleChatbot()" class="w-14 h-14 bg-navy hover:bg-navy-light text-white rounded-2xl shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110 focus:outline-none border-2 border-white">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+    </div>
+
+    <!-- AI Chatbot Window Popup -->
+    <div id="chatbot-popup" class="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-300 hidden flex-col overflow-hidden transition-all duration-300 max-h-[540px] h-[520px]">
+        
+        <!-- Chatbot Header -->
+        <div class="bg-navy-dark text-white p-4 flex items-center justify-between border-b-2 border-safety">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <div class="w-9 h-9 bg-navy text-white rounded-xl flex items-center justify-center text-base border border-navy-light">
+                        <i class="fa-solid fa-headset text-safety-accent"></i>
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-navy-dark"></span>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white leading-tight" data-lang="bot_title">Trợ Lý AI Kỹ Thuật - Nguyễn Anh</h4>
+                    <span class="text-[10px] text-gray-300 font-medium">Sẵn sàng tư vấn báo giá 24/7</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleChatbot()" class="text-gray-300 hover:text-white p-1 text-sm"><i class="fa-solid fa-minus"></i></button>
+                <button onclick="toggleChatbot()" class="text-gray-300 hover:text-white p-1 text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <!-- Chat History Log -->
+        <div id="chat-logs" class="flex-1 p-4 overflow-y-auto space-y-3 bg-industrial text-xs">
+            <!-- Messages rendered dynamically -->
+        </div>
+
+        <!-- Quick Quick Action Suggestion Buttons -->
+        <div id="quick-options" class="p-2 bg-gray-100 border-t border-gray-200 flex flex-wrap gap-1.5 text-[11px]">
+            <button onclick="sendQuickMessage('Báo giá Kệ Selective / Drive-In')" class="bg-white hover:bg-navy hover:text-white text-navy font-medium border border-gray-300 px-2.5 py-1 rounded-lg transition text-left">
+                Kệ Selective / Drive-In
+            </button>
+            <button onclick="sendQuickMessage('Hệ thống Kệ Radio Shuttle')" class="bg-white hover:bg-navy hover:text-white text-navy font-medium border border-gray-300 px-2.5 py-1 rounded-lg transition text-left">
+                Kệ Radio Shuttle
+            </button>
+            <button onclick="sendQuickMessage('Báo giá Pallet sắt mạ kẽm')" class="bg-white hover:bg-navy hover:text-white text-navy font-medium border border-gray-300 px-2.5 py-1 rounded-lg transition text-left">
+                Pallet sắt
+            </button>
+            <button onclick="sendQuickMessage('Đăng ký Khảo sát Kho miễn phí')" class="bg-white hover:bg-navy hover:text-white text-navy font-medium border border-gray-300 px-2.5 py-1 rounded-lg transition text-left">
+                Khảo sát kho 24h
+            </button>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form onsubmit="handleChatSubmit(event)" class="p-2.5 bg-white border-t border-gray-200 flex items-center gap-2">
+            <input type="text" id="chat-input" placeholder="Nhập câu hỏi về kích thước kho, tải trọng..." class="flex-1 px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-navy">
+            <button type="submit" class="bg-navy hover:bg-navy-light text-white px-4 py-2.5 rounded-xl text-xs font-bold transition">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           1. LANGUAGE DICTIONARY (VIE / ENG)
+           ========================================================================== */
+        let currentLang = 'vi';
+
+        const translations = {
+            vi: {
+                factory_addr: "KCN Tân Bình & KCN Hiệp Phước, TP. Hồ Chí Minh",
+                sub_brand: "Gia Công Kệ Kho & Lưu Trữ Tự Động",
+                nav_home: "Trang Chủ",
+                nav_about: "Giới Thiệu",
+                nav_products: "Sản Phẩm Kệ Kho",
+                nav_solutions: "Giải Pháp Kho Vận",
+                nav_process: "Quy Trình Triển Khai",
+                nav_quote: "Báo Giá",
+                nav_contact: "Liên Hệ",
+                btn_get_quote: "Báo Giá Ngay",
+                hero_badge: "ĐƠN VỊ TIÊN PHONG SẢN XUẤT KỆ KHO B2B ĐẠT CHUẨN KHO LẠNH & GMP",
+                hero_title: "GIẢI PHÁP KỆ KHO HÀNG & HỆ THỐNG LƯU TRỮ TỰ ĐỘNG CHUYÊN NGHIỆP",
+                hero_desc: "Cơ Khí Nguyễn Anh chuyên tư vấn, thiết kế, sản xuất & lắp đặt trọn gói hệ thống kệ tải trọng nặng, kệ Radio Shuttle, ASRS, kệ trung tải và Pallet sắt phục vụ nhà kho thông minh toàn quốc.",
+                hero_cta_quote: "Yêu Cầu Báo Giá & Tư Vấn Kỹ Thuật",
+                hero_cta_catalog: "Tải Catalog Sản Phẩm (PDF)",
+                stats_title: "Năng Lực Nhà Máy Nguyễn Anh",
+                stat_1: "Năm Kinh Nghiệm Chế Tạo",
+                stat_2: "Dự Án Kho Vận Lắp Đặt",
+                stat_3: "Diện Tích Nhà Xưởng",
+                stat_4: "Thử Tải Kiểm Định An Toàn",
+                about_sub: "Về Cơ Khí Nguyễn Anh",
+                about_title: "TIÊU CHUẨN SẢN XUẤT CÔNG NGHIỆP HÀNG ĐẦU",
+                cap1_title: "Dây Chuyền Sơn Tĩnh Điện Tự Động",
+                cap1_desc: "Hệ thống xử lý bề mặt kim loại 7 bể hóa chất đạt chuẩn, công nghệ phủ bột sơn tĩnh điện độ bền màu cực cao, chống gỉ sét môi trường kho lạnh -30°C.",
+                cap2_title: "Máy Cán Định Hình & CNC Chính Xác",
+                cap2_desc: "Sở hữu máy cán chân kệ Omega liên hoàn, máy đột lỗ NC tự động và Robot hàn đường seams chuẩn xác micron, đảm bảo chịu lực tiêu chuẩn FEM châu Âu.",
+                cap3_title: "Đội Ngũ Kỹ Sư Kết Cấu B2B",
+                cap3_desc: "Đội ngũ kỹ sư tính toán phân tích mô phỏng mô-men uốn dầm Beam, tải trọng động & tĩnh. Thiết kế bản vẽ 2D Autocad và 3D Solidworks tối ưu mật độ chứa hàng.",
+                prod_sub: "Danh Mục Sản Phẩm",
+                prod_title: "SẢN PHẨM KỆ KHO & HỆ THỐNG LƯU TRỮ CỐT LÕI",
+                p1_title: "Kệ Radio Shuttle Tự Động",
+                p1_desc: "Hệ thống lưu trữ mật độ cao sử dụng Robot Shuttle chạy tự động trong dãy kệ bằng điều khiển từ xa. Tăng 90% hiệu suất chứa hàng kho lạnh.",
+                p2_title: "Kệ Chứa Hàng Selective",
+                p2_desc: "Hệ thống kệ phổ biến nhất cho phép truy xuất trực tiếp 100% Pallet. Phù hợp cho kho quy mô tổng hợp, nhiều chủng loại SKU sản phẩm.",
+                p3_title: "Kệ Tải Trọng Nặng Drive-In",
+                p3_desc: "Xe nâng chui trực tiếp vào trong lòng dãy kệ để đặt pallet. Tiết kiệm tối đa lối đi, lý tưởng cho kho hàng cùng một chủng loại sản phẩm lớn.",
+                p4_title: "Kệ Sàn Mezzanine & VNA",
+                p4_desc: "Hệ thống sàn thép kết cấu nhân đôi/nhân ba diện tích mặt bằng kho. Kết hợp với kệ lối đi hẹp VNA giúp khai thác tối đa chiều cao nhà xưởng.",
+                p5_title: "Kệ Trung Tải & Kệ Tay Đỡ",
+                p5_desc: "Kệ trung tải xếp hàng bằng tay và kệ tay đỡ (Cantilever) chuyên cho hàng hóa dạng ống dài, gỗ thanh, cuộn thép, nhôm định hình.",
+                p6_title: "Pallet Sắt Mạ Kẽm & Phụ Kiện",
+                p6_desc: "Sản xuất Pallet sắt sơn tĩnh điện/mạ kẽm nhúng nóng, lồng lưới sắt gấp gọn trữ hàng và rào chắn bảo vệ chân kệ chống va đụng xe nâng.",
+                btn_req_quote: "Yêu Cầu Báo Giá",
+                sol_sub: "Tiêu Chuẩn Kho Vận Quốc Tế",
+                sol_title: "GIẢI PHÁP ĐÁP ỨNG NGHIÊM NGẶT AN TOÀN PCCC & CHỨNG NHẬN ISO",
+                sol1_title: "Tiêu Chuẩn Kho Lạnh (-30°C)",
+                sol1_desc: "Sơn tĩnh điện chịu nhiệt chuyên dụng không tróc vảy, thép mạ kẽm cường độ cao chống oxy hóa trong kho đông lạnh thủy hải sản.",
+                sol2_title: "Tiêu Chuẩn GMP / GSP Dược Phẩm",
+                sol2_desc: "Thiết kế tối ưu thông thoáng, không góc chết đọng bụi, bề mặt láng mịn dễ vệ sinh, đáp ứng kiểm định nghiêm ngặt Bộ Y Tế.",
+                sol3_title: "Nghị Định PCCC Nhà Kho Mới",
+                sol3_desc: "Kết cấu khoảng cách giữa các hàng kệ chuẩn xác giúp đầu phun Sprinkler thẩm thấu nước chữa cháy hoàn hảo mọi góc.",
+                sol4_title: "Tiêu Chuẩn Châu Âu FEM & ISO",
+                sol4_desc: "Hệ thống quản lý chất lượng ISO 9001:2015, tính toán độ võng an toàn δ ≤ L/200 theo tiêu chuẩn FEM 10.2.02 Châu Âu.",
+                proc_sub: "Hợp Tác B2B Chuyên Nghiệp",
+                proc_title: "QUY TRÌNH TRIỂN KHAI DỰ ÁN 5 BƯỚC CƠ KHÍ NGUYỄN ANH",
+                step1_title: "Khảo Sát Thực Địa",
+                step1_desc: "Tiếp nhận yêu cầu, đo đạc kích thước mặt bằng kho thực tế và lắng nghe nhu cầu luồng hàng.",
+                step2_title: "Thiết Kế 2D / 3D",
+                step2_desc: "Kỹ sư lập bản vẽ phối cảnh 3D kho hàng tối ưu diện tích và lối đi xe nâng hoàn toàn miễn phí.",
+                step3_title: "Bóc Tách & Báo Giá",
+                step3_desc: "Lập bảng dự toán chi tiết chủng loại thép, tải trọng tầng, báo giá cạnh tranh trực tiếp từ nhà máy.",
+                step4_title: "Sản Xuất Tại Xưởng",
+                step4_desc: "Gia công cán định hình, hàn tự động và sơn tĩnh điện tại nhà máy Nguyễn Anh đạt tiến độ 100%.",
+                step5_title: "Lắp Đặt & Bảo Trì",
+                step5_desc: "Thi công chuyên nghiệp, thử tải nghiệm thu thực tế & cam kết bảo trì kỹ thuật định kỳ 24/7.",
+                partner_title: "ĐỐI TÁC TIÊU BIỂU CUNG CẤP HỆ THỐNG KỆ KHO",
+                form_title: "YÊU CẦU BÁO GIÁ & KHẢO SÁT KHO HÀNG",
+                form_sub: "Điền thông tin diện tích mặt bằng kho và nhu cầu kệ chứa hàng. Kỹ sư Nguyễn Anh sẽ gửi phương án bản vẽ 2D/3D & báo giá trong 24 giờ.",
+                lbl_name: "Họ và Tên Người Liên Hệ *",
+                lbl_company: "Tên Doanh Nghiệp / Công Ty *",
+                lbl_phone: "Số Điện Thoại / Zalo *",
+                lbl_email: "Địa Chỉ Email B2B *",
+                lbl_category: "Loại Hệ Thống Kệ Quan Tâm *",
+                lbl_area: "Diện Tích Kho / Tải Trọng Mới (m²)",
+                lbl_link: "Link Dán Bản Vẽ Kỹ Thuật (Google Drive / PDF / CAD)",
+                lbl_note: "Chi Tiết Yêu Cầu Kỹ Thuật & Yêu Cầu Tiến Độ",
+                btn_submit_form: "Gửi Yêu Cầu Báo Giá & Đăng Ký Khảo Sát",
+                foot_links: "Danh Mục Sản Phẩm",
+                foot_policy: "Chính Sách & Cam Kết",
+                bot_title: "Trợ Lý AI Kỹ Thuật - Nguyễn Anh",
+                bot_welcome: "Xin chào! Tôi là Trợ lý Kỹ thuật của Cơ Khí Nguyễn Anh. Bạn đang cần tư vấn giải pháp kệ chứa hàng, hệ thống kệ tự động hay thiết kế kho vận?"
+            },
+            en: {
+                factory_addr: "Tan Binh IP & Hiep Phuoc IP, Ho Chi Minh City",
+                sub_brand: "Racking & Automated Warehouse Manufacturing",
+                nav_home: "Home",
+                nav_about: "About Us",
+                nav_products: "Racking Systems",
+                nav_solutions: "Warehouse Solutions",
+                nav_process: "Project Steps",
+                nav_quote: "Get Quote",
+                nav_contact: "Contact Us",
+                btn_get_quote: "Get Quote Now",
+                hero_badge: "PIONEERING ISO & GMP CERTIFIED INDUSTRIAL RACKING MANUFACTURER",
+                hero_title: "PROFESSIONAL HEAVY DUTY RACKING & AUTOMATED WAREHOUSE SOLUTIONS",
+                hero_desc: "Nguyen Anh Mechanical specializes in consulting, designing, manufacturing and installing heavy-duty racks, Radio Shuttle systems, ASRS, and steel pallets nationwide.",
+                hero_cta_quote: "Request Quote & Technical Support",
+                hero_cta_catalog: "Download Catalog (PDF)",
+                stats_title: "Nguyen Anh Factory Capabilities",
+                stat_1: "Years Of Fabrication Experience",
+                stat_2: "Warehouse Racking Projects",
+                stat_3: "Factory Floor Space",
+                stat_4: "Load Test Safety Inspection",
+                about_sub: "About Nguyen Anh Mechanical",
+                about_title: "LEADING INDUSTRIAL MANUFACTURING STANDARDS",
+                cap1_title: "Automated Powder Coating Line",
+                cap1_desc: "7-tank chemical surface treatment system with ultra-durable powder coating, rust resistant in -30°C cold storage.",
+                cap2_title: "Omega Roll Forming & NC Machines",
+                cap2_desc: "Equipped with continuous Omega post roll forming, NC punching machines, and robot seam welding complying with European FEM standards.",
+                cap3_title: "B2B Structural Engineering Team",
+                cap3_desc: "Engineering team analyzing beam bending moments, dynamic & static loads, creating 2D AutoCAD and 3D Solidworks layouts.",
+                prod_sub: "Product Catalog",
+                prod_title: "CORE RACKING & AUTOMATED STORAGE SYSTEMS",
+                p1_title: "Automated Radio Shuttle Racking",
+                p1_desc: "High-density storage utilizing remote-controlled shuttle robots. Increases cold storage space utilization by 90%.",
+                p2_title: "Selective Racking System",
+                p2_desc: "Most versatile racking system allowing 100% direct pallet access. Ideal for general distribution centers with multiple SKUs.",
+                p3_title: "Drive-In Heavy Duty Racking",
+                p3_desc: "Forklifts drive directly into rack lanes to place pallets. Saves aisle space, best for homogenous high-volume SKUs.",
+                p4_title: "Mezzanine Floor & VNA Racking",
+                p4_desc: "Steel structure flooring doubling/tripling floor space. Combined with Very Narrow Aisle (VNA) to maximize ceiling height.",
+                p5_title: "Medium Duty & Cantilever Racks",
+                p5_desc: "Hand-loaded medium duty racks and Cantilever racks specifically engineered for long pipes, timber, steel coils, and aluminum profiles.",
+                p6_title: "Galvanized Steel Pallet & Accessories",
+                p6_desc: "Heavy-duty steel pallets, collapsible wire mesh containers, and rack upright protectors against forklift collisions.",
+                btn_req_quote: "Request Quote",
+                sol_sub: "International Logistics Standards",
+                sol_title: "SOLUTIONS STRICTLY COMPLYING WITH FIRE SAFETY & ISO CERTIFICATIONS",
+                sol1_title: "Cold Storage Standard (-30°C)",
+                sol1_desc: "Heat-resistant powder coating prevented from peeling, high-strength galvanized steel for seafood frozen warehouses.",
+                sol2_title: "GMP / GSP Pharmaceutical Standard",
+                sol2_desc: "Optimized dust-free design with smooth surface finishes complying with strict Ministry of Health audits.",
+                sol3_title: "Latest Fire Safety Regulations",
+                sol3_desc: "Calculated inter-rack spacing allowing roof sprinkler water penetration through all tier levels.",
+                sol4_title: "European FEM & ISO Standards",
+                sol4_desc: "ISO 9001:2015 quality management system, safe deflection tolerance δ ≤ L/200 according to European FEM 10.2.02.",
+                proc_sub: "Professional B2B Process",
+                proc_title: "5-STEP PROJECT IMPLEMENTATION PROCESS",
+                step1_title: "On-Site Survey",
+                step1_desc: "Receiving requirements, measuring actual warehouse footprint, and analyzing material flow.",
+                step2_title: "2D / 3D Layout Design",
+                step2_desc: "Engineers generate 3D warehouse layouts optimizing storage density and forklift turning aisles for free.",
+                step3_title: "BOM & Quotation",
+                step3_desc: "Detailed bill of materials, beam load tiers, and competitive direct factory prices.",
+                step4_title: "Factory Manufacturing",
+                step4_desc: "Roll-forming, robotic welding, and powder coating at Nguyen Anh factory delivered 100% on schedule.",
+                step5_title: "Installation & Maintenance",
+                step5_desc: "Professional installation, on-site load testing, and committed 24/7 technical maintenance.",
+                partner_title: "REPRESENTATIVE LOGISTICS & WAREHOUSE CLIENTS",
+                form_title: "TECHNICAL QUOTE & SITE SURVEY REQUEST",
+                form_sub: "Fill in your warehouse footprint and racking requirements. Nguyen Anh engineers will provide 2D/3D layouts & quotes within 24 hours.",
+                lbl_name: "Contact Full Name *",
+                lbl_company: "Company / Enterprise Name *",
+                lbl_phone: "Phone / Zalo Number *",
+                lbl_email: "B2B Email Address *",
+                lbl_category: "System Of Interest *",
+                lbl_area: "Warehouse Footprint / Pallet Load (m²)",
+                lbl_link: "Technical Drawing Link (Google Drive / PDF / CAD)",
+                lbl_note: "Technical Specifications & Timeline Notes",
+                btn_submit_form: "Submit For Technical Quote & Survey",
+                foot_links: "Product Categories",
+                foot_policy: "Policies & Commitments",
+                bot_title: "Nguyen Anh AI Technical Assistant",
+                bot_welcome: "Hello! I am Nguyen Anh AI Assistant. Do you need advice on heavy duty racking, Radio Shuttle automation, or warehouse site survey?"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            if (lang === 'vi') {
+                document.getElementById('btn-lang-vi').className = "px-2.5 py-0.5 rounded bg-safety text-white transition";
+                document.getElementById('btn-lang-en').className = "px-2.5 py-0.5 rounded hover:text-safety-accent text-gray-300 transition";
+            } else {
+                document.getElementById('btn-lang-en').className = "px-2.5 py-0.5 rounded bg-safety text-white transition";
+                document.getElementById('btn-lang-vi').className = "px-2.5 py-0.5 rounded hover:text-safety-accent text-gray-300 transition";
+            }
+
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        /* ==========================================================================
+           2. INTERACTION CONTROLLERS (MOBILE MENU & MODALS)
+           ========================================================================== */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openCatalogModal() {
+            document.getElementById('catalog-modal').classList.remove('hidden');
+        }
+
+        function closeCatalogModal() {
+            document.getElementById('catalog-modal').classList.add('hidden');
+        }
+
+        function handleCatalogSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('cat-email').value;
+            closeCatalogModal();
+            showCustomToast(`Hệ thống đã gửi link Catalog PDF vào email: ${email}. Cảm ơn bạn!`);
+        }
+
+        function requestQuoteProduct(productName) {
+            const categorySelect = document.getElementById('q-category');
+            if (categorySelect) {
+                for (let i = 0; i < categorySelect.options.length; i++) {
+                    if (categorySelect.options[i].value.includes(productName) || categorySelect.options[i].text.includes(productName)) {
+                        categorySelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            const formSection = document.getElementById('quote-form');
+            if (formSection) {
+                formSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function handleQuoteFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('q-name').value;
+            const company = document.getElementById('q-company').value;
+
+            showCustomToast(`Gửi yêu cầu thành công! Cảm ơn ${name} (${company}). Kỹ sư Cơ Khí Nguyễn Anh sẽ gửi bản vẽ & báo giá trong 24h.`);
+            document.getElementById('b2bQuoteForm').reset();
+        }
+
+        function showCustomToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-6 right-6 z-50 bg-navy border-2 border-safety text-white p-4 sm:p-5 rounded-2xl shadow-2xl flex items-center gap-3 max-w-md';
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-2xl text-safety-accent"></i>
+                <div class="text-xs sm:text-sm font-semibold">${message}</div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        /* ==========================================================================
+           3. BUILT-IN AI CHATBOT SYSTEM LOGIC
+           ========================================================================== */
+        let isChatbotOpen = false;
+        let hasInitializedBot = false;
+
+        function toggleChatbot() {
+            const popup = document.getElementById('chatbot-popup');
+            const badge = document.getElementById('chat-badge');
+            
+            isChatbotOpen = !isChatbotOpen;
+            if (isChatbotOpen) {
+                popup.classList.remove('hidden');
+                popup.classList.add('flex');
+                if (badge) badge.classList.add('hidden');
+                
+                if (!hasInitializedBot) {
+                    initBotWelcomeMessage();
+                    hasInitializedBot = true;
+                }
+            } else {
+                popup.classList.add('hidden');
+                popup.classList.remove('flex');
+            }
+        }
+
+        function initBotWelcomeMessage() {
+            const welcomeText = translations[currentLang].bot_welcome;
+            appendBotMessage(welcomeText);
+        }
+
+        function appendUserMessage(text) {
+            const chatLogs = document.getElementById('chat-logs');
+            const timeStr = getCurrentTimeStr();
+            
+            const messageHTML = `
+                <div class="flex justify-end mb-3">
+                    <div class="max-w-[80%] bg-navy text-white p-3 rounded-2xl rounded-tr-none shadow-sm">
+                        <p class="leading-relaxed">${escapeHTML(text)}</p>
+                        <span class="text-[9px] text-gray-300 block text-right mt-1">${timeStr}</span>
+                    </div>
+                </div>
+            `;
+            chatLogs.innerHTML += messageHTML;
+            scrollToBottomChat();
+        }
+
+        function appendBotMessage(text) {
+            const chatLogs = document.getElementById('chat-logs');
+            const timeStr = getCurrentTimeStr();
+
+            const typingId = 'typing-' + Date.now();
+            const typingHTML = `
+                <div id="${typingId}" class="flex items-start space-x-2 mb-3">
+                    <div class="w-7 h-7 bg-navy rounded-xl flex items-center justify-center text-white text-xs flex-shrink-0">
+                        <i class="fa-solid fa-headset text-safety-accent"></i>
+                    </div>
+                    <div class="bg-white border border-gray-200 text-steel p-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></span>
+                        <span class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></span>
+                        <span class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></span>
+                    </div>
+                </div>
+            `;
+            chatLogs.innerHTML += typingHTML;
+            scrollToBottomChat();
+
+            setTimeout(() => {
+                const typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
+
+                const botMessageHTML = `
+                    <div class="flex items-start space-x-2 mb-3">
+                        <div class="w-7 h-7 bg-navy rounded-xl flex items-center justify-center text-white text-xs flex-shrink-0 mt-1">
+                            <i class="fa-solid fa-headset text-safety-accent"></i>
+                        </div>
+                        <div class="max-w-[82%] bg-white border border-gray-200 text-steel p-3 rounded-2xl rounded-tl-none shadow-sm">
+                            <p class="leading-relaxed">${text}</p>
+                            <span class="text-[9px] text-gray-400 block mt-1">${timeStr}</span>
+                        </div>
+                    </div>
+                `;
+                chatLogs.innerHTML += botMessageHTML;
+                scrollToBottomChat();
+            }, 600);
+        }
+
+        function handleChatSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-input');
+            const userMsg = input.value.trim();
+            
+            if (!userMsg) return;
+            
+            appendUserMessage(userMsg);
+            input.value = '';
+            
+            processBotResponse(userMsg);
+        }
+
+        function sendQuickMessage(text) {
+            appendUserMessage(text);
+            processBotResponse(text);
+        }
+
+        /* Logic phản hồi B2B Chuẩn theo yêu cầu */
+        function processBotResponse(userMessage) {
+            const lowerMsg = userMessage.toLowerCase();
+
+            // Phone / Email Lead detection
+            const phoneRegex = /(0[3|5|7|8|9])+([0-9]{8})\b/;
+            const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+
+            if (phoneRegex.test(userMessage) || emailRegex.test(userMessage)) {
+                appendBotMessage("Cảm ơn Quý khách đã để lại thông tin! Phòng Kỹ Thuật Dự Án Cơ Khí Nguyễn Anh đã lưu dữ liệu và sẽ liên hệ khảo sát mặt bằng / tư vấn báo giá ngay.");
+                return;
+            }
+
+            // Price / Quote queries logic
+            const priceKeywords = ['giá', 'báo giá', 'bao nhiêu', 'chi phí', 'đơn giá', 'price', 'quote', 'cost', 'shuttle', 'selective', 'drive-in', 'pallet'];
+            const isPriceQuery = priceKeywords.some(keyword => lowerMsg.includes(keyword));
+
+            if (isPriceQuery) {
+                const quoteB2BResponse = "Đơn giá hệ thống kệ phụ thuộc vào tải trọng/pallet, chiều cao kho, loại hàng hóa và quy mô lắp đặt. Quý khách vui lòng để lại SĐT/Zalo hoặc gửi bản vẽ kho qua Email: <strong>contact@nguyenanhcokhi.vn</strong> để kỹ sư thiết kế lập phương án & báo giá tối ưu nhất trong 24h!";
+                appendBotMessage(quoteB2BResponse);
+                return;
+            }
+
+            // Site survey / Address query
+            if (lowerMsg.includes('khảo sát') || lowerMsg.includes('địa chỉ') || lowerMsg.includes('nhà máy') || lowerMsg.includes('xưởng') || lowerMsg.includes('ở đâu')) {
+                const surveyResponse = "Cơ Khí Nguyễn Anh hỗ trợ <strong>Khảo sát đo đạc mặt bằng kho hoàn toàn MIỄN PHÍ</strong> tận nơi trên toàn quốc. Nhà máy sản xuất đặt tại Lô B2, Đường số 4, KCN Hiệp Phước, TP.HCM. Quý khách có thể để lại SĐT để xếp lịch kỹ sư ngay hôm nay!";
+                appendBotMessage(surveyResponse);
+                return;
+            }
+
+            // Default Response
+            const defaultResponse = "Cảm ơn Quý đối tác đã quan tâm tới Cơ Khí Nguyễn Anh! Để nhận bản vẽ phối cảnh 3D kho hàng và bảng bóc tách khối lượng chi tiết, Quý khách vui lòng để lại Số điện thoại/Zalo hoặc điền Form báo giá trên website.";
+            appendBotMessage(defaultResponse);
+        }
+
+        function scrollToBottomChat() {
+            const chatLogs = document.getElementById('chat-logs');
+            chatLogs.scrollTop = chatLogs.scrollHeight;
+        }
+
+        function getCurrentTimeStr() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
